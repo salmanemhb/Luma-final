@@ -1,5 +1,6 @@
 """
 Main FastAPI application
+Version: 1.0.1 - Fixed pandas import issues
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
