@@ -2,6 +2,7 @@
 OCR and document parsing service for Spanish invoices
 Supports: Iberdrola, Endesa, Naturgy, fuel cards, freight, CSVs
 """
+from __future__ import annotations
 import re
 import fitz  # PyMuPDF
 try:
@@ -9,11 +10,15 @@ try:
     HAS_PANDAS = True
 except ImportError:
     HAS_PANDAS = False
+    pd = None  # Define pd as None if not available
 from datetime import datetime
-from typing import Optional, Dict, Any, List, Tuple
+from typing import Optional, Dict, Any, List, Tuple, TYPE_CHECKING
 from pathlib import Path
 import hashlib
 import json
+
+if TYPE_CHECKING:
+    import pandas as pd
 
 from app.config import settings
 from app.models.schemas import UploadRecord, DocumentCategory
@@ -484,7 +489,7 @@ class DocumentParser:
             return UploadRecord(confidence=0.0, meta={"error": str(e)})
     
     @classmethod
-    def _parse_tabular_data(cls, df: pd.DataFrame) -> UploadRecord:
+    def _parse_tabular_data(cls, df: Any) -> UploadRecord:
         """Parse DataFrame with flexible column mapping"""
         # Normalize column names
         df.columns = df.columns.str.lower().str.strip()
