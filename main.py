@@ -4,7 +4,6 @@ Main FastAPI application
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
-from app.database import init_db
 from app.routes import auth, files, dashboard, reports
 
 # Create FastAPI app
@@ -38,13 +37,7 @@ async def startup_event():
     print("🚀 Starting Luma ESG API...")
     print(f"Environment: {settings.ENVIRONMENT}")
     print(f"Allowed origins: {settings.allowed_origins_list}")
-    
-    # Initialize database tables
-    try:
-        init_db()
-        print("✅ Database initialized")
-    except Exception as e:
-        print(f"⚠️  Database initialization warning: {e}")
+    print("✅ Database connection ready")
 
 
 @app.get("/")
